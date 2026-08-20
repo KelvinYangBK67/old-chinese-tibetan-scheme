@@ -3,88 +3,138 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="以藏文 Unicode 機械轉寫 Baxter–Sagart 上古漢語擬音的方案。">
+  <meta name="description" content="以藏文拼寫 Baxter–Sagart 上古漢語擬音的轉寫方案。">
+  <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
   <title>上古漢語藏文轉寫方案</title>
+  <link rel="preload" href="fonts/NotoSerifTibetan-Regular.woff2?v=oc-tibetan-v1" as="font" type="font/woff2" crossorigin fetchpriority="high">
+  <link rel="preload" href="fonts/shanggu-web/ShangguSans-Regular-core.woff2?v=oc-tibetan-v1" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/shanggu-web/ShangguSans-Bold-core.woff2?v=oc-tibetan-v1" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="fonts/shanggu-web.css?v=oc-tibetan-v1">
-  <link rel="stylesheet" href="scheme.css?v=oc-tibetan-v1">
+  <link rel="stylesheet" href="scheme.css?v=oc-tibetan-v2">
 </head>
-<body><div class="layout">
-  <aside class="rail">
-    <p class="rail-title">上古漢語藏文轉寫方案</p>
-    <p class="rail-meta">Old Chinese Tibetan Transcription Scheme</p>
-    <nav>
-      <a href="#overview">方案總則</a><a href="#normalization">B–S 正規化</a>
-      <a href="#initials">聲母</a><a href="#minor">Minor syllable</a>
-      <a href="#tight">Tight preinitial</a><a href="#class">A/B、r、w</a>
-      <a href="#vowels">元音與韻尾</a><a href="#unicode">Unicode 組裝</a>
-      <a href="#reverse">逆轉規則</a><a href="#data">人工資料表</a>
-      <a href="converter/">互轉工具</a><a href="上古漢語藏文轉寫方案-en.html">English</a>
-    </nav>
-    <p class="rail-foot">© 2026 Kelvin Yang<br>CC BY-NC-SA 4.0</p>
-  </aside>
-  <main>
-    <header class="hero" id="overview">
-      <p class="eyebrow">Old Chinese · Tibetan transcription</p>
-      <h1>上古漢語藏文轉寫方案</h1>
-      <p class="lead">以藏文 Unicode 表示 Baxter–Sagart 上古漢語擬音。每個音節先解析為固定槽位，再由同一內部格式正向編碼或反向解碼。</p>
-      <p class="hero-meta"><span>B–S ↔ Tibetan</span><span><a href="converter/">開啟互轉工具</a></span></p>
-    </header>
-    <section><div class="section-head"><h2>中間結構</h2></div>
-      <pre>MINOR + TIGHT + ROOT + CLASS + VOWEL + CODA + POSTCODA
+<body>
+  <div class="layout">
+    <aside class="rail">
+      <div class="seal" aria-hidden="true">上古</div>
+      <p class="rail-title">上古漢語藏文轉寫方案</p>
+      <p class="rail-meta">Kelvin Yang · 2026年8月</p>
+      <nav aria-label="章節導航">
+        <a href="converter/">互轉工具</a>
+        <a href="上古漢語藏文轉寫方案-en.html">English</a>
+        <a href="#initials">聲母</a>
+        <a href="#onsets">次要音節與冠音</a>
+        <a href="#features">咽化、r 與合口</a>
+        <a href="#vowels">元音</a>
+        <a href="#codas">韻尾</a>
+        <a href="#sonorants">清響音</a>
+        <a href="#tests">拼寫測試</a>
+      </nav>
+      <p class="rail-foot">本方案以娛樂爲主。</p>
+    </aside>
 
-minor = (C₁, vowel?, C₂?)
-tight = (P₁?, P₂?)
-class = (A/B, r, w)
-coda  = ∅/j/w/r/m/n/ŋ/p/t/k/wk
-post  = ∅/ʔ/s/ʔs</pre>
-      <p class="note"><code>decode(encode(BS)) = normalize(BS)</code>。反向恢復 canonical B–S，不恢復原始構擬標記。</p>
-    </section>
-    <section id="normalization"><div class="section-head"><h2>B–S 正規化</h2></div>
-      <p><code>*</code> 刪除，<code>[x]</code>、<code>(x)</code>、<code>&lt;x&gt;</code> 均取 <code>x</code>；<code>~</code> 預設取左側主形。minor 的點與 tight preinitial 的連字符保留為結構邊界。</p>
-      <p><code>P-rV</code> 與 <code>PrV</code> 一律正規化為 root P 加 r-feature。因此 <code>*s-rut</code> 與 <code>*srut</code> 均寫作 <span class="tibetan">སྲུད</span>，反向輸出 <code>srut</code>。</p>
-    </section>
-    <section id="initials"><div class="section-head"><h2>普通聲母</h2></div>
-      <div class="table-wrap"><table><thead><tr><th>B–S</th><th>藏文</th><th>B–S</th><th>藏文</th><th>B–S</th><th>藏文</th></tr></thead><tbody>
-        <tr><td>p pʰ b m</td><td class="tibetan">པ ཕ བ མ</td><td>t tʰ d n</td><td class="tibetan">ཏ ཐ ད ན</td><td>ts tsʰ dz s</td><td class="tibetan">ཙ ཚ ཛ ས</td></tr>
-        <tr><td>k kʰ g ŋ</td><td class="tibetan">ཀ ཁ ག ང</td><td>q qʰ ɢ ʔ</td><td class="tibetan">ཅ ཆ ཇ ཨ</td><td>l r</td><td class="tibetan">ལ ར</td></tr>
-        <tr><td>C N S</td><td class="tibetan">འ ཎ ཤ</td><td colspan="4">抽象輔音只在資料明確使用時轉寫</td></tr>
-      </tbody></table></div>
-    </section>
-    <section id="minor"><div class="section-head"><h2>Minor syllable</h2></div>
-      <p>單輔音 minor：無明寫元音加 <span class="tibetan">྄</span>，<code>ə</code> 加 <span class="tibetan">ྀ</span>，明寫 <code>a i u e o</code> 加 <span class="tibetan">ཱ ི ུ ེ ོ</span>。CC minor 寫作 <code>BASE(C₁) + SUBJOIN(C₂) + vowel</code>。點本身不輸出。</p>
-    </section>
-    <section id="tight"><div class="section-head"><h2>Tight preinitial</h2></div>
-      <pre>0: BASE(root)
-1: BASE(P₁) + SUBJOIN(root)
-2: BASE(P₁) + BASE(P₂) + SUBJOIN(root)</pre>
-      <p>兩個 tight preinitial 時，P₁ 是裸前加位置；它不能攜帶元音符號。</p>
-    </section>
-    <section id="class"><div class="section-head"><h2>A/B、r、w</h2></div>
-      <div class="table-wrap"><table><thead><tr><th></th><th>∅</th><th>r</th><th>w</th><th>rw</th></tr></thead><tbody>
-        <tr><th>B</th><td>Ø</td><td class="tibetan">ྲ</td><td class="tibetan">ྭ</td><td class="tibetan">ྲྭ</td></tr>
-        <tr><th>A（ˤ）</th><td class="tibetan">ྱ</td><td class="tibetan">ྼ</td><td class="tibetan">ྱྭ</td><td class="tibetan">ྼྭ</td></tr>
-      </tbody></table></div>
-    </section>
-    <section id="vowels"><div class="section-head"><h2>主元音、coda、postcoda</h2></div>
-      <div class="table-wrap"><table><tbody><tr><th>元音</th><td>a</td><td>A</td><td>i</td><td>u</td><td>e</td><td>o</td><td>ə</td></tr><tr><th>藏文</th><td>Ø</td><td class="tibetan">ཱ</td><td class="tibetan">ི</td><td class="tibetan">ུ</td><td class="tibetan">ེ</td><td class="tibetan">ོ</td><td class="tibetan">ྀ</td></tr></tbody></table></div>
-      <p>coda <code>j w r m n ŋ p t k wk</code> 分別為 <span class="tibetan">ཡ ཝ ར མ ན ང བ ད ག ཝག</span>。postcoda <code>ʔ s ʔ-s</code> 分別為 <span class="tibetan">འ ས འས</span>。</p>
-    </section>
-    <section id="unicode"><div class="section-head"><h2>Unicode 組裝次序</h2></div>
-      <pre>[minor stack]
-[outer tight preinitial]
-[superscript + root stack]
-[class markers]
-[vowel]
-[coda]
-[postcoda]</pre>
-    </section>
-    <section id="reverse"><div class="section-head"><h2>逆轉規則</h2></div>
-      <ol><li>自右向左拆 postcoda。</li><li>按 longest match 拆 coda，優先匹配 <span class="tibetan">ཝག</span>。</li><li>拆主元音及八格 class。</li><li>由剩餘 stack 恢復零至兩個 tight preinitial 與 root。</li><li>最前帶 minor 元音或 <span class="tibetan">྄</span> 的 stack 恢復為 minor syllable。</li></ol>
-    </section>
-    <section id="data"><div class="section-head"><h2>人工資料表</h2></div>
-      <p>清響音 <code>m̥ n̥ ŋ̊ l̥ r̥</code> 不作字符級全局替換；須由漢字、詞義或 row ID 索引歷史來源。少數格式異常項另由 special normalization 表處理。漢字入口只使用明載於 <code>han,bs</code> CSV 的讀音，未收錄字不猜測。</p>
-    </section>
-    <footer>© 2026 Kelvin Yang · <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hant">CC BY-NC-SA 4.0</a></footer>
-  </main>
-</div></body></html>
+    <main>
+      <header class="hero">
+        <p class="eyebrow">Old Chinese · Tibetan transcription</p>
+        <h1>上古漢語藏文轉寫方案</h1>
+        <p class="lead">以藏文拼寫上古漢語之方案，以 Baxter–Sagart 擬音爲基礎，務求簡潔、自然。本方案以娛樂爲主。</p>
+        <div class="hero-meta"><span>Kelvin Yang</span><span>2026年8月</span></div>
+      </header>
 
+      <section id="initials">
+        <div class="section-head"><span class="section-no">01</span><h2>聲母</h2></div>
+        <div class="table-wrap"><table class="matrix">
+          <thead><tr><th>部位</th><th>不送氣清音</th><th>送氣清音</th><th>濁音</th><th>鼻音</th><th>擦音或流音</th></tr></thead>
+          <tbody>
+            <tr><th>脣音</th><td><span class="phonetic">p</span> <span class="tibetan">པ</span></td><td><span class="phonetic">pʰ</span> <span class="tibetan">ཕ</span></td><td><span class="phonetic">b</span> <span class="tibetan">བ</span></td><td><span class="phonetic">m</span> <span class="tibetan">མ</span></td><td>—</td></tr>
+            <tr><th>舌尖音</th><td><span class="phonetic">t</span> <span class="tibetan">ཏ</span></td><td><span class="phonetic">tʰ</span> <span class="tibetan">ཐ</span></td><td><span class="phonetic">d</span> <span class="tibetan">ད</span></td><td><span class="phonetic">n</span> <span class="tibetan">ན</span></td><td><span class="phonetic">l</span> <span class="tibetan">ལ</span></td></tr>
+            <tr><th>齒音</th><td><span class="phonetic">ts</span> <span class="tibetan">ཙ</span></td><td><span class="phonetic">tsʰ</span> <span class="tibetan">ཚ</span></td><td><span class="phonetic">dz</span> <span class="tibetan">ཛ</span></td><td>—</td><td><span class="phonetic">s</span> <span class="tibetan">ས</span></td></tr>
+            <tr><th>軟齶音</th><td><span class="phonetic">k</span> <span class="tibetan">ཀ</span></td><td><span class="phonetic">kʰ</span> <span class="tibetan">ཁ</span></td><td><span class="phonetic">g</span> <span class="tibetan">ག</span></td><td><span class="phonetic">ŋ</span> <span class="tibetan">ང</span></td><td>—</td></tr>
+            <tr><th>小舌音</th><td><span class="phonetic">q</span> <span class="tibetan">ཅ</span></td><td><span class="phonetic">qʰ</span> <span class="tibetan">ཆ</span></td><td><span class="phonetic">ɢ</span> <span class="tibetan">ཇ</span></td><td>—</td><td>—</td></tr>
+            <tr><th>喉音</th><td><span class="phonetic">ʔ</span> <span class="tibetan">ཨ</span></td><td>—</td><td>—</td><td>—</td><td><span class="phonetic">r</span> <span class="tibetan">ར</span></td></tr>
+            <tr><th>不定輔音</th><td><span class="phonetic">C</span> <span class="tibetan">འ</span></td><td>—</td><td>—</td><td><span class="phonetic">N</span> <span class="tibetan">ཎ</span></td><td><span class="phonetic">S</span> <span class="tibetan">ཤ</span></td></tr>
+          </tbody>
+        </table></div>
+        <p class="note">Baxter–Sagart 的小舌音在本方案中借用藏文腭音字母。抽象符號 <span class="phonetic">C、N、S</span> 只表示文獻沒有進一步確定其音值，不把它們與某一個具體聲母混同。</p>
+      </section>
+
+      <section id="onsets">
+        <div class="section-head"><span class="section-no">02</span><h2>次要音節與冠音</h2></div>
+        <h3>次要音節</h3>
+        <p>Baxter–Sagart 擬音中點號以前的成分另寫作一個短小字組，不加音節點。明寫元音照常標出；沒有明寫元音者加 <span class="tibetan">྄</span>，以別於明寫 <span class="phonetic">ə</span> 的 <span class="tibetan">ྀ</span>。</p>
+        <div class="table-wrap compact"><table><thead><tr><th>B–S</th><th>藏文</th><th>B–S</th><th>藏文</th></tr></thead><tbody>
+          <tr><td class="phonetic">C.</td><td class="tibetan">འ྄</td><td class="phonetic">Cə.</td><td class="tibetan">འྀ</td></tr>
+          <tr><td class="phonetic">Ca.</td><td class="tibetan">འཱ</td><td class="phonetic">Ci.</td><td class="tibetan">འི</td></tr>
+          <tr><td class="phonetic">Cu.</td><td class="tibetan">འུ</td><td class="phonetic">Ce. / Co.</td><td class="tibetan">འེ / འོ</td></tr>
+          <tr><td class="phonetic">kət.</td><td class="tibetan">ཀྟྀ</td><td class="phonetic">Cə.p-</td><td class="tibetan">འྀཔ-</td></tr>
+        </tbody></table></div>
+
+        <h3>緊密相連的冠音</h3>
+        <p>與主聲母緊密相連的前置輔音寫入同一個藏文字組。一個冠音置於主聲母上方；兩個冠音時，第一個居前，第二個仍作上加字。</p>
+        <div class="table-wrap compact"><table><thead><tr><th>B–S</th><th>藏文</th><th>說明</th></tr></thead><tbody>
+          <tr><td class="phonetic">s-ka</td><td class="tibetan">སྐ</td><td><span class="phonetic">s</span> 上加於 <span class="phonetic">k</span></td></tr>
+          <tr><td class="phonetic">m-s-ka</td><td class="tibetan">མསྐ</td><td><span class="phonetic">m</span> 居前，<span class="phonetic">s</span> 上加</td></tr>
+          <tr><td class="phonetic">m-s-rəʔ</td><td class="tibetan">མྶྲྀའ</td><td><span class="phonetic">m</span> 爲冠音，<span class="phonetic">r</span> 下加於 <span class="phonetic">s</span></td></tr>
+        </tbody></table></div>
+      </section>
+
+      <section id="features">
+        <div class="section-head"><span class="section-no">03</span><h2>咽化、r 與合口</h2></div>
+        <p>主聲母後的咽化 <span class="phonetic">ˤ</span>、<span class="phonetic">r</span> 和合口 <span class="phonetic">ʷ</span> 以一組固定下加符號表示。三者無論如何組合，次序都保持一致。</p>
+        <div class="table-wrap compact"><table><thead><tr><th></th><th>無</th><th>r</th><th>ʷ</th><th>rʷ</th></tr></thead><tbody>
+          <tr><th>非咽化</th><td>無記號</td><td class="tibetan">ྲ</td><td class="tibetan">ྭ</td><td class="tibetan">ྲྭ</td></tr>
+          <tr><th>咽化 ˤ</th><td class="tibetan">ྱ</td><td class="tibetan">ྼ</td><td class="tibetan">ྱྭ</td><td class="tibetan">ྼྭ</td></tr>
+        </tbody></table></div>
+        <p class="note"><span class="phonetic">P-rV</span> 和 <span class="phonetic">PrV</span> 都把 <span class="phonetic">P</span> 視作主聲母，<span class="phonetic">r</span> 寫在其下。因此 <span class="phonetic">*s-rut</span> 與 <span class="phonetic">*srut</span> 都寫作 <span class="tibetan">སྲུད</span>。單獨的 <span class="phonetic">rV</span> 仍以 <span class="tibetan">ར</span> 作基字。</p>
+      </section>
+
+      <section id="vowels">
+        <div class="section-head"><span class="section-no">04</span><h2>元音</h2></div>
+        <div class="table-wrap compact"><table><thead><tr><th>B–S</th><th>藏文</th><th>B–S</th><th>藏文</th></tr></thead><tbody>
+          <tr><td class="phonetic">a</td><td>無記號</td><td class="phonetic">A</td><td class="tibetan">ཱ</td></tr>
+          <tr><td class="phonetic">i</td><td class="tibetan">ི</td><td class="phonetic">u</td><td class="tibetan">ུ</td></tr>
+          <tr><td class="phonetic">e</td><td class="tibetan">ེ</td><td class="phonetic">o</td><td class="tibetan">ོ</td></tr>
+          <tr><td class="phonetic">ə</td><td class="tibetan">ྀ</td><td></td><td></td></tr>
+        </tbody></table></div>
+        <p class="note">小寫 <span class="phonetic">a</span> 不加元音符號；大寫 <span class="phonetic">A</span> 明寫 <span class="tibetan">ཱ</span>，兩者始終有別。次要音節中的明寫 <span class="phonetic">a</span> 也用 <span class="tibetan">ཱ</span>。</p>
+      </section>
+
+      <section id="codas">
+        <div class="section-head"><span class="section-no">05</span><h2>韻尾</h2></div>
+        <h3>主要韻尾</h3>
+        <div class="table-wrap compact"><table><thead><tr><th>B–S</th><th>藏文</th><th>B–S</th><th>藏文</th><th>B–S</th><th>藏文</th></tr></thead><tbody>
+          <tr><td class="phonetic">-j</td><td class="tibetan">ཡ</td><td class="phonetic">-w</td><td class="tibetan">ཝ</td><td class="phonetic">-r</td><td class="tibetan">ར</td></tr>
+          <tr><td class="phonetic">-m</td><td class="tibetan">མ</td><td class="phonetic">-n</td><td class="tibetan">ན</td><td class="phonetic">-ŋ</td><td class="tibetan">ང</td></tr>
+          <tr><td class="phonetic">-p</td><td class="tibetan">བ</td><td class="phonetic">-t</td><td class="tibetan">ད</td><td class="phonetic">-k</td><td class="tibetan">ག</td></tr>
+          <tr><td class="phonetic">-wk</td><td class="tibetan">ཝག</td><td></td><td></td><td></td><td></td></tr>
+        </tbody></table></div>
+        <p>塞音韻尾依藏文後加字的習慣，分別寫作 <span class="tibetan">བ、ད、ག</span>，而不用聲母位置的 <span class="tibetan">པ、ཏ、ཀ</span>。</p>
+        <h3>後加成分</h3>
+        <div class="table-wrap compact"><table><thead><tr><th>B–S</th><th>藏文</th><th>例</th></tr></thead><tbody>
+          <tr><td class="phonetic">-ʔ</td><td class="tibetan">འ</td><td><span class="phonetic">nʔ</span> <span class="tibetan">ནའ</span></td></tr>
+          <tr><td class="phonetic">-s</td><td class="tibetan">ས</td><td><span class="phonetic">n-s</span> <span class="tibetan">ནས</span></td></tr>
+          <tr><td class="phonetic">-ʔ-s</td><td class="tibetan">འས</td><td><span class="phonetic">nʔ-s</span> <span class="tibetan">ནའས</span></td></tr>
+        </tbody></table></div>
+        <p class="note">音節開頭的 <span class="phonetic">ʔ-</span> 用 <span class="tibetan">ཨ</span>，音節末尾的 <span class="phonetic">-ʔ</span> 用 <span class="tibetan">འ</span>，位置與字形均不相混。</p>
+      </section>
+
+      <section id="sonorants">
+        <div class="section-head"><span class="section-no">06</span><h2>清響音</h2></div>
+        <p>Baxter–Sagart 2014 的 <span class="phonetic">m̥、n̥、ŋ̊、l̥、r̥</span> 不另造藏文字母。這些聲母依其較晚確定的歷史來源，寫成相應的前置輔音加普通響音，例如 <span class="phonetic">k-m̥</span> 寫作 <span class="phonetic">k-m</span>，<span class="phonetic">t.l̥</span> 寫作 <span class="phonetic">t-l</span>。來源尚不能確定時，以不定輔音 <span class="phonetic">C</span> 表示。</p>
+      </section>
+
+      <section id="tests">
+        <div class="section-head"><span class="section-no">07</span><h2>拼寫測試</h2></div>
+        <div class="cards">
+          <article class="word-card"><span class="phonetic">*s-rut</span><dl><dt>同形</dt><dd class="phonetic">*srut</dd><dt>藏文</dt><dd class="tibetan">སྲུད</dd></dl></article>
+          <article class="word-card"><span class="phonetic">*m-s-rəʔ</span><dl><dt>結構</dt><dd>冠音 + r</dd><dt>藏文</dt><dd class="tibetan">མྶྲྀའ</dd></dl></article>
+          <article class="word-card"><span class="phonetic">*qʰˤrik</span><dl><dt>特徵</dt><dd>咽化 + r</dd><dt>藏文</dt><dd class="tibetan">ཆྼིག</dd></dl></article>
+          <article class="word-card"><span class="phonetic">*Cə.pAŋʔ-s</span><dl><dt>特徵</dt><dd>次要音節</dd><dt>藏文</dt><dd class="tibetan">འྀཔཱངའས</dd></dl></article>
+          <article class="word-card"><span class="phonetic">*kət.gˤʷawk</span><dl><dt>特徵</dt><dd>CC 次要音節</dd><dt>藏文</dt><dd class="tibetan">ཀྟྀགྱྭཝག</dd></dl></article>
+        </div>
+      </section>
+
+      <footer>© 2026 Kelvin Yang · <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hant">CC BY-NC-SA 4.0</a></footer>
+    </main>
+  </div>
+</body>
+</html>

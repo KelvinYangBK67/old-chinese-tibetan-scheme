@@ -31,4 +31,12 @@ for (const page of [
   assert.ok(readme.includes(`https://kelvinyangbk67.github.io/old-chinese-tibetan-scheme/${page}`), `README: missing Pages link for ${page}`);
 }
 
+const chineseScheme = fs.readFileSync(path.join(__dirname, "..", "上古漢語藏文轉寫方案.html"), "utf8");
+for (const section of ["initials", "onsets", "features", "vowels", "codas", "sonorants", "tests"]) {
+  assert.ok(chineseScheme.includes(`id="${section}"`), `Chinese scheme: missing human-facing section ${section}`);
+}
+for (const implementationTerm of ["slot", "normalize", "Unicode 組裝", "逆轉規則", "人工資料表", "longest match"]) {
+  assert.ok(!chineseScheme.includes(implementationTerm), `Chinese scheme: implementation detail leaked into prose: ${implementationTerm}`);
+}
+
 console.log("HTML metadata, inline scripts, and README Pages links passed.");

@@ -1,8 +1,79 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Old Chinese Tibetan Transcription Scheme</title><link rel="stylesheet" href="fonts/shanggu-web.css?v=oc-tibetan-v1"><link rel="stylesheet" href="scheme.css?v=oc-tibetan-v1"></head>
-<body><div class="layout"><aside class="rail"><p class="rail-title">Old Chinese Tibetan Transcription Scheme</p><p class="rail-meta">上古漢語藏文轉寫方案</p><nav><a href="#overview">Overview</a><a href="#structure">Structure</a><a href="#mapping">Mapping</a><a href="#reverse">Reverse conversion</a><a href="converter/">Converter</a><a href="上古漢語藏文轉寫方案.html">中文</a></nav><p class="rail-foot">© 2026 Kelvin Yang<br>CC BY-NC-SA 4.0</p></aside>
-<main><header class="hero" id="overview"><p class="eyebrow">Old Chinese · Tibetan transcription</p><h1>Old Chinese Tibetan Transcription Scheme</h1><p class="lead">A mechanical Tibetan Unicode orthography for Baxter–Sagart Old Chinese reconstructions, based on a normalized slot representation.</p></header>
-<section id="structure"><div class="section-head"><h2>Structure</h2></div><pre>MINOR + TIGHT + ROOT + CLASS(A/B, r, w) + VOWEL + CODA + POSTCODA</pre><p class="note"><code>decode(encode(BS)) = normalize(BS)</code></p><p>Reconstruction markup is removed. Equivalent <code>P-rV</code> and <code>PrV</code> inputs merge into root P plus an r-feature.</p></section>
-<section id="mapping"><div class="section-head"><h2>Mapping</h2></div><p>Initials use ordinary Tibetan base letters. Minor syllables carry an explicit vowel or <span class="tibetan">྄</span>; tight preinitials form stacked onsets. Type A, r and w use the eight class-marker combinations documented in the Chinese edition.</p><p>Main vowels <code>a A i u e o ə</code> are written Ø, <span class="tibetan">ཱ ི ུ ེ ོ ྀ</span>. Codas and postcodas follow fixed tables.</p></section>
-<section id="reverse"><div class="section-head"><h2>Reverse conversion</h2></div><p>The decoder strips postcoda and coda by longest match, then vowel and class markers, onset stacks, and an optional minor stack. It emits canonical B–S and never recreates editorial brackets.</p></section>
-<footer>© 2026 Kelvin Yang · <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">CC BY-NC-SA 4.0</a></footer></main></div></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A Tibetan transcription scheme for Baxter–Sagart Old Chinese.">
+  <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+  <title>Old Chinese Tibetan Transcription Scheme</title>
+  <link rel="preload" href="fonts/NotoSerifTibetan-Regular.woff2?v=oc-tibetan-v1" as="font" type="font/woff2" crossorigin fetchpriority="high">
+  <link rel="stylesheet" href="fonts/shanggu-web.css?v=oc-tibetan-v1">
+  <link rel="stylesheet" href="scheme.css?v=oc-tibetan-v2">
+</head>
+<body><div class="layout">
+  <aside class="rail">
+    <div class="seal" aria-hidden="true">OC</div>
+    <p class="rail-title">Old Chinese Tibetan Transcription Scheme</p>
+    <p class="rail-meta">Kelvin Yang · August 2026</p>
+    <nav aria-label="Sections">
+      <a href="converter/">Converter</a><a href="上古漢語藏文轉寫方案.html">中文</a>
+      <a href="#initials">Initials</a><a href="#onsets">Minor syllables and preinitials</a>
+      <a href="#features">Pharyngealization, r and labialization</a>
+      <a href="#vowels">Vowels</a><a href="#codas">Codas</a>
+      <a href="#sonorants">Voiceless sonorants</a><a href="#tests">Spelling tests</a>
+    </nav>
+    <p class="rail-foot">This scheme is primarily recreational.</p>
+  </aside>
+  <main>
+    <header class="hero"><p class="eyebrow">Old Chinese · Tibetan transcription</p><h1>Old Chinese Tibetan Transcription Scheme</h1><p class="lead">A scheme for spelling Old Chinese in Tibetan script, based on the Baxter–Sagart reconstruction and intended to be concise and natural. This scheme is primarily recreational.</p><div class="hero-meta"><span>Kelvin Yang</span><span>August 2026</span></div></header>
+
+    <section id="initials"><div class="section-head"><span class="section-no">01</span><h2>Initials</h2></div>
+      <div class="table-wrap"><table class="matrix"><thead><tr><th>Place</th><th>Voiceless</th><th>Aspirated</th><th>Voiced</th><th>Nasal</th><th>Fricative or liquid</th></tr></thead><tbody>
+        <tr><th>Labial</th><td>p <span class="tibetan">པ</span></td><td>pʰ <span class="tibetan">ཕ</span></td><td>b <span class="tibetan">བ</span></td><td>m <span class="tibetan">མ</span></td><td>—</td></tr>
+        <tr><th>Coronal</th><td>t <span class="tibetan">ཏ</span></td><td>tʰ <span class="tibetan">ཐ</span></td><td>d <span class="tibetan">ད</span></td><td>n <span class="tibetan">ན</span></td><td>l <span class="tibetan">ལ</span></td></tr>
+        <tr><th>Sibilant</th><td>ts <span class="tibetan">ཙ</span></td><td>tsʰ <span class="tibetan">ཚ</span></td><td>dz <span class="tibetan">ཛ</span></td><td>—</td><td>s <span class="tibetan">ས</span></td></tr>
+        <tr><th>Velar</th><td>k <span class="tibetan">ཀ</span></td><td>kʰ <span class="tibetan">ཁ</span></td><td>g <span class="tibetan">ག</span></td><td>ŋ <span class="tibetan">ང</span></td><td>—</td></tr>
+        <tr><th>Uvular</th><td>q <span class="tibetan">ཅ</span></td><td>qʰ <span class="tibetan">ཆ</span></td><td>ɢ <span class="tibetan">ཇ</span></td><td>—</td><td>—</td></tr>
+        <tr><th>Laryngeal</th><td>ʔ <span class="tibetan">ཨ</span></td><td>—</td><td>—</td><td>—</td><td>r <span class="tibetan">ར</span></td></tr>
+        <tr><th>Unspecified</th><td>C <span class="tibetan">འ</span></td><td>—</td><td>—</td><td>N <span class="tibetan">ཎ</span></td><td>S <span class="tibetan">ཤ</span></td></tr>
+      </tbody></table></div>
+      <p class="note">Baxter–Sagart uvulars borrow the Tibetan palatal series. Abstract C, N and S indicate that the source does not identify a more specific consonant.</p>
+    </section>
+
+    <section id="onsets"><div class="section-head"><span class="section-no">02</span><h2>Minor syllables and preinitials</h2></div>
+      <h3>Minor syllables</h3><p>Material before the Baxter–Sagart dot is written as a short preceding stack without a syllable delimiter. An explicit vowel takes its ordinary sign. A minor syllable with no written vowel takes <span class="tibetan">྄</span>, keeping it distinct from explicit ə <span class="tibetan">ྀ</span>.</p>
+      <div class="table-wrap compact"><table><thead><tr><th>B–S</th><th>Tibetan</th><th>B–S</th><th>Tibetan</th></tr></thead><tbody><tr><td>C.</td><td class="tibetan">འ྄</td><td>Cə.</td><td class="tibetan">འྀ</td></tr><tr><td>Ca.</td><td class="tibetan">འཱ</td><td>Ci.</td><td class="tibetan">འི</td></tr><tr><td>kət.</td><td class="tibetan">ཀྟྀ</td><td>Cə.p-</td><td class="tibetan">འྀཔ-</td></tr></tbody></table></div>
+      <h3>Tightly attached preinitials</h3><p>A tightly attached preinitial joins the main initial in a single Tibetan stack. With two preinitials, the first stands before the stack and the second remains superscribed.</p>
+      <div class="table-wrap compact"><table><thead><tr><th>B–S</th><th>Tibetan</th><th>Arrangement</th></tr></thead><tbody><tr><td>s-ka</td><td class="tibetan">སྐ</td><td>s above k</td></tr><tr><td>m-s-ka</td><td class="tibetan">མསྐ</td><td>m before superscribed s</td></tr><tr><td>m-s-rəʔ</td><td class="tibetan">མྶྲྀའ</td><td>m above s, with subjoined r</td></tr></tbody></table></div>
+    </section>
+
+    <section id="features"><div class="section-head"><span class="section-no">03</span><h2>Pharyngealization, r and labialization</h2></div>
+      <p>Pharyngealization ˤ, post-initial r and labialization ʷ use a fixed set of subjoined signs after the main initial.</p>
+      <div class="table-wrap compact"><table><thead><tr><th></th><th>None</th><th>r</th><th>ʷ</th><th>rʷ</th></tr></thead><tbody><tr><th>Non-pharyngealized</th><td>unmarked</td><td class="tibetan">ྲ</td><td class="tibetan">ྭ</td><td class="tibetan">ྲྭ</td></tr><tr><th>Pharyngealized ˤ</th><td class="tibetan">ྱ</td><td class="tibetan">ྼ</td><td class="tibetan">ྱྭ</td><td class="tibetan">ྼྭ</td></tr></tbody></table></div>
+      <p class="note">P-rV and PrV both treat P as the main initial and place r beneath it. Thus *s-rut and *srut are both <span class="tibetan">སྲུད</span>. An initial rV still uses base <span class="tibetan">ར</span>.</p>
+    </section>
+
+    <section id="vowels"><div class="section-head"><span class="section-no">04</span><h2>Vowels</h2></div>
+      <div class="table-wrap compact"><table><thead><tr><th>B–S</th><th>Tibetan</th><th>B–S</th><th>Tibetan</th></tr></thead><tbody><tr><td>a</td><td>unmarked</td><td>A</td><td class="tibetan">ཱ</td></tr><tr><td>i</td><td class="tibetan">ི</td><td>u</td><td class="tibetan">ུ</td></tr><tr><td>e</td><td class="tibetan">ེ</td><td>o</td><td class="tibetan">ོ</td></tr><tr><td>ə</td><td class="tibetan">ྀ</td><td></td><td></td></tr></tbody></table></div>
+      <p class="note">Lowercase a is unmarked, while capital A always takes <span class="tibetan">ཱ</span>. Explicit a in a minor syllable also takes <span class="tibetan">ཱ</span>.</p>
+    </section>
+
+    <section id="codas"><div class="section-head"><span class="section-no">05</span><h2>Codas</h2></div>
+      <div class="table-wrap compact"><table><thead><tr><th>B–S</th><th>Tibetan</th><th>B–S</th><th>Tibetan</th><th>B–S</th><th>Tibetan</th></tr></thead><tbody><tr><td>-j</td><td class="tibetan">ཡ</td><td>-w</td><td class="tibetan">ཝ</td><td>-r</td><td class="tibetan">ར</td></tr><tr><td>-m</td><td class="tibetan">མ</td><td>-n</td><td class="tibetan">ན</td><td>-ŋ</td><td class="tibetan">ང</td></tr><tr><td>-p</td><td class="tibetan">བ</td><td>-t</td><td class="tibetan">ད</td><td>-k</td><td class="tibetan">ག</td></tr><tr><td>-wk</td><td class="tibetan">ཝག</td><td>-ʔ</td><td class="tibetan">འ</td><td>-s</td><td class="tibetan">ས</td></tr><tr><td>-ʔ-s</td><td class="tibetan">འས</td><td></td><td></td><td></td><td></td></tr></tbody></table></div>
+      <p>Stop codas follow Tibetan suffix practice and use <span class="tibetan">བ ད ག</span>, rather than initial-position <span class="tibetan">པ ཏ ཀ</span>. Initial ʔ- uses <span class="tibetan">ཨ</span>, whereas final -ʔ uses <span class="tibetan">འ</span>.</p>
+    </section>
+
+    <section id="sonorants"><div class="section-head"><span class="section-no">06</span><h2>Voiceless sonorants</h2></div><p>The 2014 symbols m̥, n̥, ŋ̊, l̥ and r̥ receive no separate Tibetan letters. Each is written according to its later-established historical source as a preinitial plus an ordinary sonorant. An unresolved source uses unspecified C.</p></section>
+
+    <section id="tests"><div class="section-head"><span class="section-no">07</span><h2>Spelling tests</h2></div>
+      <div class="cards">
+        <article class="word-card"><span class="phonetic">*s-rut</span><dl><dt>Also</dt><dd>*srut</dd><dt>Tibetan</dt><dd class="tibetan">སྲུད</dd></dl></article>
+        <article class="word-card"><span class="phonetic">*m-s-rəʔ</span><dl><dt>Form</dt><dd>preinitial + r</dd><dt>Tibetan</dt><dd class="tibetan">མྶྲྀའ</dd></dl></article>
+        <article class="word-card"><span class="phonetic">*qʰˤrik</span><dl><dt>Form</dt><dd>ˤ + r</dd><dt>Tibetan</dt><dd class="tibetan">ཆྼིག</dd></dl></article>
+        <article class="word-card"><span class="phonetic">*Cə.pAŋʔ-s</span><dl><dt>Form</dt><dd>minor syllable</dd><dt>Tibetan</dt><dd class="tibetan">འྀཔཱངའས</dd></dl></article>
+      </div>
+    </section>
+    <footer>© 2026 Kelvin Yang · <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">CC BY-NC-SA 4.0</a></footer>
+  </main>
+</div></body>
+</html>

@@ -2,11 +2,7 @@
 
 ## 轉寫方案 / Transcription scheme
 
-本方案依 Baxter–Sagart 上古漢語擬音的音節結構，使用藏文 Unicode 拼寫上古漢語。轉寫以 slot tuple 為唯一中間格式，滿足：
-
-```text
-decode(encode(BS)) = normalize(BS)
-```
+本方案爲以藏文拼寫上古漢語之方案，以 Baxter–Sagart 擬音爲基礎，務求簡潔、自然。本方案以娛樂爲主。
 
 - [閱讀中文網頁版](https://kelvinyangbk67.github.io/old-chinese-tibetan-scheme/%E4%B8%8A%E5%8F%A4%E6%BC%A2%E8%AA%9E%E8%97%8F%E6%96%87%E8%BD%89%E5%AF%AB%E6%96%B9%E6%A1%88.html)
 - [Read the English web edition](https://kelvinyangbk67.github.io/old-chinese-tibetan-scheme/%E4%B8%8A%E5%8F%A4%E6%BC%A2%E8%AA%9E%E8%97%8F%E6%96%87%E8%BD%89%E5%AF%AB%E6%96%B9%E6%A1%88-en.html)
@@ -14,7 +10,7 @@ decode(encode(BS)) = normalize(BS)
 
 ## 互轉工具 / Converter
 
-- 漢字 → 藏文：先由靜態 `han,bs` 表取得 canonical B–S，再進入共同藏文核心。
+- 漢字 → 藏文：先由靜態 `han,bs` 表取得 B–S 擬音，再轉寫爲藏文。
 - B–S → 藏文：接受構擬星號、括號記號與以 `~` 分隔的 alternative。
 - 藏文 → B–S：輸出 normalized B–S，不重建構擬記號。
 

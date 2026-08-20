@@ -1,16 +1,32 @@
-% Typesetting skeleton matching the bilingual source layout of the reference repository.
 \documentclass[11pt]{article}
 \usepackage{fontspec}
+\usepackage{booktabs}
+\usepackage{hyperref}
 \setmainfont{Libertinus Sans}
 \title{Old Chinese Tibetan Transcription Scheme}
 \author{Kelvin Yang}
-\date{2026}
+\date{August 2026}
 \begin{document}
 \maketitle
-\section{Principle}
-The scheme mechanically transcribes Baxter--Sagart Old Chinese through a fixed slot representation.
-\[
-\operatorname{decode}(\operatorname{encode}(BS))=\operatorname{normalize}(BS)
-\]
-See the web edition for the complete Unicode specification.
+
+This is a scheme for spelling Old Chinese in Tibetan script, based on the Baxter--Sagart reconstruction and intended to be concise and natural. It is primarily recreational.
+
+\section{Initials}
+Ordinary initials borrow Tibetan letters of the nearest value or series. Uvulars use the Tibetan palatal series. Abstract $C$, $N$ and $S$ are reserved for consonants whose value remains unspecified.
+
+\section{Minor syllables and preinitials}
+Material before the Baxter--Sagart dot forms a short preceding stack. An explicit vowel takes its ordinary sign; absence of a written vowel remains distinct from explicit $ə$. Tightly attached preinitials join the main initial in one stack.
+
+\section{Pharyngealization, r and labialization}
+Pharyngealization $ˤ$, post-initial $r$ and labialization $ʷ$ use a fixed set of subjoined signs. $P$-$rV$ and $PrV$ share one spelling, while initial $rV$ retains a base r.
+
+\section{Vowels and codas}
+Lowercase $a$ is unmarked and capital $A$ is written explicitly. Other vowels and all codas use the fixed correspondences given in the web edition. Stop codas follow ordinary Tibetan suffix practice.
+
+\section{Voiceless sonorants}
+The 2014 symbols $m̥$, $n̥$, $ŋ̊$, $l̥$ and $r̥$ are written according to their historical sources as a preinitial plus an ordinary sonorant.
+
+\section{Spelling tests}
+Representative forms and their Tibetan spellings appear in the web edition.
+
 \end{document}

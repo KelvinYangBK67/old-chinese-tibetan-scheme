@@ -1,19 +1,37 @@
-% 上古漢語藏文轉寫方案的排版來源骨架。
-% 網頁版目前是規範文本；此檔預留給與參考 repo 相同的 XeLaTeX PDF 流程。
 \documentclass[11pt]{article}
 \usepackage{fontspec}
 \usepackage{xeCJK}
+\usepackage{booktabs}
+\usepackage{hyperref}
 \setmainfont{Libertinus Sans}
 \title{上古漢語藏文轉寫方案}
 \author{Kelvin Yang}
-\date{2026}
+\date{2026年8月}
 \begin{document}
 \maketitle
-\section{總則}
-本方案以固定槽位結構機械轉寫 Baxter--Sagart 上古漢語擬音。
-\[
-\operatorname{decode}(\operatorname{encode}(BS))=\operatorname{normalize}(BS)
-\]
-完整規則及 Unicode 表見同目錄專案的網頁版。
+
+本方案爲以藏文拼寫上古漢語之方案，以 Baxter--Sagart 擬音爲基礎，務求簡潔、自然。本方案以娛樂爲主。
+
+\section{聲母}
+普通聲母借用音值或系列相近的藏文字母。脣音、舌尖音、齒音和軟齶音分別使用藏文相應系列；小舌音借用腭音系列。抽象輔音 $C$、$N$、$S$ 只在文獻沒有進一步確定音值時使用。
+
+\section{次要音節與冠音}
+點號以前的次要音節另寫作一個短小字組。明寫元音照常標出；沒有明寫元音者加藏文 halanta，以別於明寫的 $ə$。緊密相連的前置輔音與主聲母組成同一字組。
+
+\section{咽化、r 與合口}
+咽化 $ˤ$、主聲母後的 $r$ 和合口 $ʷ$ 使用固定下加符號。$P$-$rV$ 與 $PrV$ 寫法相同；單獨的 $rV$ 仍以藏文 r 作基字。
+
+\section{元音}
+小寫 $a$ 不加符號；大寫 $A$ 明寫長元音符號。$i$、$u$、$e$、$o$、$ə$ 各用固定藏文元音符號。
+
+\section{韻尾}
+$j$、$w$、$r$、$m$、$n$、$ŋ$ 直接使用相應藏文字母。塞音韻尾 $p$、$t$、$k$ 依藏文後加字習慣寫作濁音字母。後加 $ʔ$、$s$、$ʔ$-$s$ 分別寫作藏文 a-chung、sa 及二者連寫。
+
+\section{清響音}
+Baxter--Sagart 2014 的 $m̥$、$n̥$、$ŋ̊$、$l̥$、$r̥$ 不另造藏文字母，而依其歷史來源寫成前置輔音加普通響音。
+
+\section{拼寫測試}
+代表性構形及其藏文寫法見網頁版。
+
 \end{document}
 
