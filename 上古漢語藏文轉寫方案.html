@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="以藏文 Unicode 機械轉寫 Baxter–Sagart 上古漢語擬音的方案。">
+  <title>上古漢語藏文轉寫方案</title>
+  <link rel="stylesheet" href="fonts/shanggu-web.css?v=oc-tibetan-v1">
+  <link rel="stylesheet" href="scheme.css?v=oc-tibetan-v1">
+</head>
+<body><div class="layout">
+  <aside class="rail">
+    <p class="rail-title">上古漢語藏文轉寫方案</p>
+    <p class="rail-meta">Old Chinese Tibetan Transcription Scheme</p>
+    <nav>
+      <a href="#overview">方案總則</a><a href="#normalization">B–S 正規化</a>
+      <a href="#initials">聲母</a><a href="#minor">Minor syllable</a>
+      <a href="#tight">Tight preinitial</a><a href="#class">A/B、r、w</a>
+      <a href="#vowels">元音與韻尾</a><a href="#unicode">Unicode 組裝</a>
+      <a href="#reverse">逆轉規則</a><a href="#data">人工資料表</a>
+      <a href="converter/">互轉工具</a><a href="上古漢語藏文轉寫方案-en.html">English</a>
+    </nav>
+    <p class="rail-foot">© 2026 Kelvin Yang<br>CC BY-NC-SA 4.0</p>
+  </aside>
+  <main>
+    <header class="hero" id="overview">
+      <p class="eyebrow">Old Chinese · Tibetan transcription</p>
+      <h1>上古漢語藏文轉寫方案</h1>
+      <p class="lead">以藏文 Unicode 表示 Baxter–Sagart 上古漢語擬音。每個音節先解析為固定槽位，再由同一內部格式正向編碼或反向解碼。</p>
+      <p class="hero-meta"><span>B–S ↔ Tibetan</span><span><a href="converter/">開啟互轉工具</a></span></p>
+    </header>
+    <section><div class="section-head"><h2>中間結構</h2></div>
+      <pre>MINOR + TIGHT + ROOT + CLASS + VOWEL + CODA + POSTCODA
+
+minor = (C₁, vowel?, C₂?)
+tight = (P₁?, P₂?)
+class = (A/B, r, w)
+coda  = ∅/j/w/r/m/n/ŋ/p/t/k/wk
+post  = ∅/ʔ/s/ʔs</pre>
+      <p class="note"><code>decode(encode(BS)) = normalize(BS)</code>。反向恢復 canonical B–S，不恢復原始構擬標記。</p>
+    </section>
+    <section id="normalization"><div class="section-head"><h2>B–S 正規化</h2></div>
+      <p><code>*</code> 刪除，<code>[x]</code>、<code>(x)</code>、<code>&lt;x&gt;</code> 均取 <code>x</code>；<code>~</code> 預設取左側主形。minor 的點與 tight preinitial 的連字符保留為結構邊界。</p>
+      <p><code>P-rV</code> 與 <code>PrV</code> 一律正規化為 root P 加 r-feature。因此 <code>*s-rut</code> 與 <code>*srut</code> 均寫作 <span class="tibetan">སྲུད</span>，反向輸出 <code>srut</code>。</p>
+    </section>
+    <section id="initials"><div class="section-head"><h2>普通聲母</h2></div>
+      <div class="table-wrap"><table><thead><tr><th>B–S</th><th>藏文</th><th>B–S</th><th>藏文</th><th>B–S</th><th>藏文</th></tr></thead><tbody>
+        <tr><td>p pʰ b m</td><td class="tibetan">པ ཕ བ མ</td><td>t tʰ d n</td><td class="tibetan">ཏ ཐ ད ན</td><td>ts tsʰ dz s</td><td class="tibetan">ཙ ཚ ཛ ས</td></tr>
+        <tr><td>k kʰ g ŋ</td><td class="tibetan">ཀ ཁ ག ང</td><td>q qʰ ɢ ʔ</td><td class="tibetan">ཅ ཆ ཇ ཨ</td><td>l r</td><td class="tibetan">ལ ར</td></tr>
+        <tr><td>C N S</td><td class="tibetan">འ ཎ ཤ</td><td colspan="4">抽象輔音只在資料明確使用時轉寫</td></tr>
+      </tbody></table></div>
+    </section>
+    <section id="minor"><div class="section-head"><h2>Minor syllable</h2></div>
+      <p>單輔音 minor：無明寫元音加 <span class="tibetan">྄</span>，<code>ə</code> 加 <span class="tibetan">ྀ</span>，明寫 <code>a i u e o</code> 加 <span class="tibetan">ཱ ི ུ ེ ོ</span>。CC minor 寫作 <code>BASE(C₁) + SUBJOIN(C₂) + vowel</code>。點本身不輸出。</p>
+    </section>
+    <section id="tight"><div class="section-head"><h2>Tight preinitial</h2></div>
+      <pre>0: BASE(root)
+1: BASE(P₁) + SUBJOIN(root)
+2: BASE(P₁) + BASE(P₂) + SUBJOIN(root)</pre>
+      <p>兩個 tight preinitial 時，P₁ 是裸前加位置；它不能攜帶元音符號。</p>
+    </section>
+    <section id="class"><div class="section-head"><h2>A/B、r、w</h2></div>
+      <div class="table-wrap"><table><thead><tr><th></th><th>∅</th><th>r</th><th>w</th><th>rw</th></tr></thead><tbody>
+        <tr><th>B</th><td>Ø</td><td class="tibetan">ྲ</td><td class="tibetan">ྭ</td><td class="tibetan">ྲྭ</td></tr>
+        <tr><th>A（ˤ）</th><td class="tibetan">ྱ</td><td class="tibetan">ྼ</td><td class="tibetan">ྱྭ</td><td class="tibetan">ྼྭ</td></tr>
+      </tbody></table></div>
+    </section>
+    <section id="vowels"><div class="section-head"><h2>主元音、coda、postcoda</h2></div>
+      <div class="table-wrap"><table><tbody><tr><th>元音</th><td>a</td><td>A</td><td>i</td><td>u</td><td>e</td><td>o</td><td>ə</td></tr><tr><th>藏文</th><td>Ø</td><td class="tibetan">ཱ</td><td class="tibetan">ི</td><td class="tibetan">ུ</td><td class="tibetan">ེ</td><td class="tibetan">ོ</td><td class="tibetan">ྀ</td></tr></tbody></table></div>
+      <p>coda <code>j w r m n ŋ p t k wk</code> 分別為 <span class="tibetan">ཡ ཝ ར མ ན ང བ ད ག ཝག</span>。postcoda <code>ʔ s ʔ-s</code> 分別為 <span class="tibetan">འ ས འས</span>。</p>
+    </section>
+    <section id="unicode"><div class="section-head"><h2>Unicode 組裝次序</h2></div>
+      <pre>[minor stack]
+[outer tight preinitial]
+[superscript + root stack]
+[class markers]
+[vowel]
+[coda]
+[postcoda]</pre>
+    </section>
+    <section id="reverse"><div class="section-head"><h2>逆轉規則</h2></div>
+      <ol><li>自右向左拆 postcoda。</li><li>按 longest match 拆 coda，優先匹配 <span class="tibetan">ཝག</span>。</li><li>拆主元音及八格 class。</li><li>由剩餘 stack 恢復零至兩個 tight preinitial 與 root。</li><li>最前帶 minor 元音或 <span class="tibetan">྄</span> 的 stack 恢復為 minor syllable。</li></ol>
+    </section>
+    <section id="data"><div class="section-head"><h2>人工資料表</h2></div>
+      <p>清響音 <code>m̥ n̥ ŋ̊ l̥ r̥</code> 不作字符級全局替換；須由漢字、詞義或 row ID 索引歷史來源。少數格式異常項另由 special normalization 表處理。漢字入口只使用明載於 <code>han,bs</code> CSV 的讀音，未收錄字不猜測。</p>
+    </section>
+    <footer>© 2026 Kelvin Yang · <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hant">CC BY-NC-SA 4.0</a></footer>
+  </main>
+</div></body></html>
+

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="漢字、Baxter–Sagart 上古漢語擬音與藏文雙向轉換。">
+  <title>上古漢語–藏文轉換器</title>
+  <link rel="preload" href="../fonts/NotoSerifTibetan-Regular.woff2?v=oc-tibetan-v1" as="font" type="font/woff2" crossorigin fetchpriority="high">
+  <link rel="preload" href="../fonts/shanggu-web/ShangguSans-Regular-core.woff2?v=oc-tibetan-v1" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../fonts/shanggu-web.css?v=oc-tibetan-v1">
+  <style>
+    @font-face{font-family:"Libertinus";src:url("../fonts/LibertinusSans-Regular.woff2?v=oc-tibetan-v1") format("woff2");font-weight:400;font-display:swap}
+    @font-face{font-family:"Libertinus";src:url("../fonts/LibertinusSans-Bold.woff2?v=oc-tibetan-v1") format("woff2");font-weight:700;font-display:swap}
+    @font-face{font-family:"Tibetan";src:url("../fonts/NotoSerifTibetan-Regular.woff2?v=oc-tibetan-v1") format("woff2");font-weight:400;font-display:swap}
+    :root{--ink:#20242a;--muted:#68717c;--line:#d6dce2;--accent:#315b7d;--soft:#f4f6f8;color:var(--ink);background:#f4f6f8;font-family:"Libertinus","Shanggu Web",sans-serif;font-synthesis:none}
+    *{box-sizing:border-box}body{min-height:100vh;margin:0;line-height:1.6}.page{width:min(72rem,calc(100% - 2rem));margin:0 auto;padding:clamp(2rem,6vw,5rem) 0}
+    header{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;margin-bottom:2rem}.eyebrow{margin:0 0 .4rem;color:var(--muted);font-size:.72rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
+    h1{margin:0;font-size:clamp(2rem,5vw,3.6rem);font-weight:700;line-height:1.12;letter-spacing:-.025em}.lead{max-width:42rem;margin:.8rem 0 0;color:#4f5964}a{color:var(--accent);text-underline-offset:.18em}
+    .header-actions{display:flex;flex:0 0 auto;flex-direction:column;align-items:flex-end;gap:.7rem;padding-bottom:.5rem}.language{display:inline-flex;align-items:center;gap:.45rem;color:var(--muted);font-size:.8rem}
+    .language select{border:1px solid #b9c1c9;padding:.3rem .45rem;color:var(--ink);background:#fff;font:inherit}.scheme-links{display:flex;flex-direction:column;align-items:flex-end;font-size:.9rem}
+    .tool{overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:0 1rem 3rem rgba(29,43,56,.08)}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.75rem;border-bottom:1px solid var(--line);background:var(--soft)}
+    .directions{display:flex;flex-wrap:wrap;gap:.25rem}.options{padding:.45rem .8rem;border-bottom:1px solid var(--line);color:var(--muted);background:#fbfcfd;font-size:.8rem}
+    button,.file-button{border:1px solid #b9c1c9;padding:.5rem .8rem;color:var(--ink);background:#fff;font:inherit;font-size:.86rem;cursor:pointer}button:hover,.file-button:hover{border-color:var(--accent);color:var(--accent)}button[aria-pressed="true"]{border-color:var(--accent);color:#fff;background:var(--accent)}
+    button:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #8db1ce;outline-offset:2px}.editors{display:grid;grid-template-columns:1fr 1fr;min-height:23rem}.pane{display:flex;min-width:0;flex-direction:column}.pane+.pane{border-left:1px solid var(--line)}
+    .pane-head{display:flex;align-items:center;justify-content:space-between;min-height:2.75rem;padding:.45rem .75rem;border-bottom:1px solid var(--line);color:var(--muted);font-size:.8rem;font-weight:700}.pane-head button{padding:.25rem .55rem;font-size:.75rem}
+    textarea{display:block;width:100%;flex:1;resize:vertical;border:0;padding:1.2rem;color:var(--ink);background:#fff;font:1.15rem/1.85 "Libertinus","Shanggu Web",sans-serif}textarea[readonly]{background:#fbfcfd}textarea.tibetan{font-family:"Tibetan",serif;font-size:1.8rem;line-height:1.9}textarea.han{font-family:"Shanggu Web",sans-serif;font-size:1.55rem;line-height:1.9}
+    .status{min-height:2.5rem;margin:0;padding:.6rem .8rem;border-top:1px solid var(--line);color:var(--muted);background:var(--soft);font-size:.8rem}.status.error{color:#8a342c;background:#fff3f1}
+    .instructions{margin-top:1.5rem;padding:1.2rem 1.4rem;border:1px solid var(--line);background:#fff}.instructions h2{margin:0 0 .7rem;font-size:1.05rem}.instructions p{margin:.65rem 0;color:#4f5964;font-size:.86rem}code{font-family:"Libertinus",sans-serif}.tibetan-inline{font-family:"Tibetan",serif;font-size:1.25em}
+    input[type="file"]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--muted);font-size:.78rem}
+    @media(max-width:720px){.page{width:min(100% - 1rem,72rem);padding-top:1.5rem}header{display:block}.header-actions,.scheme-links{align-items:flex-start;margin-top:.8rem}.editors{grid-template-columns:1fr}.pane+.pane{border-left:0;border-top:1px solid var(--line)}textarea{min-height:12rem}}
+  </style>
+</head>
+<body><main class="page">
+  <header>
+    <div><p class="eyebrow">Old Chinese · Tibetan transcription</p><h1 id="page-title">上古漢語–藏文轉換器</h1><p class="lead" id="lead">以 normalized B–S 為共同核心，支援漢字查表、B–S 正向轉寫及本方案藏文反向解碼。</p></div>
+    <div class="header-actions"><label class="language"><span id="language-label">語言</span><select id="language"><option value="zh-Hant">繁體中文</option><option value="en">English</option></select></label><div class="scheme-links"><a id="scheme-link" href="../上古漢語藏文轉寫方案.html">閱讀完整轉寫方案</a></div></div>
+  </header>
+  <section class="tool" id="tool" aria-label="上古漢語–藏文轉換工具">
+    <div class="toolbar"><div class="directions" id="directions" role="group" aria-label="轉換方向"><button id="direction-han" type="button" aria-pressed="true">漢字 → 藏文</button><button id="direction-bs" type="button" aria-pressed="false">B–S → 藏文</button><button id="direction-bo-bs" type="button" aria-pressed="false">藏文 → B–S</button></div><button id="swap" type="button" hidden>交換</button></div>
+    <div class="options" id="han-options"><label class="file-button" for="csv-file" id="csv-label">載入 han,bs CSV</label><input id="csv-file" type="file" accept=".csv,text/csv"> <span id="table-status">正在載入漢字表……</span></div>
+    <div class="editors"><div class="pane"><div class="pane-head"><label id="input-label" for="input">漢字</label><button id="clear" type="button">清除</button></div><textarea id="input" class="han" spellcheck="false" autocomplete="off" placeholder="輸入漢字；未收錄字不猜測"></textarea></div><div class="pane"><div class="pane-head"><label id="output-label" for="output">藏文</label><button id="copy" type="button">複製</button></div><textarea id="output" class="tibetan" readonly aria-live="polite"></textarea></div></div>
+    <p class="status" id="status">正在載入漢字表……</p>
+  </section>
+  <section class="instructions" aria-labelledby="instructions-title"><h2 id="instructions-title">使用說明</h2><p id="instruction-han">漢字方向讀取靜態 <code>han,bs</code> 表，再把 canonical B–S 送入同一藏文核心。可在上方載入 UTF-8 CSV；未收錄字保留原形並報錯。</p><p id="instruction-bs">B–S 方向接受構擬星號、括號記號與 <code>~</code>；反向只恢復 normalized B–S。<code>s-rut</code> 與 <code>srut</code> 均寫作 <span class="tibetan-inline">སྲུད</span>。</p><p id="instruction-punctuation">相鄰音節以 <span class="tibetan-inline">་</span> 分隔；句末標點轉為 <span class="tibetan-inline">༎</span>，一般標點轉為 <span class="tibetan-inline">།</span>。</p></section>
+  <footer>© 2026 Kelvin Yang · <a id="license" rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hant">CC BY-NC-SA 4.0</a></footer>
+</main>
+<script src="data/rules.js?v=oc-tibetan-v1"></script><script src="converter.js?v=oc-tibetan-v1"></script>
+<script>
+  const strings={
+    'zh-Hant':{title:'上古漢語–藏文轉換器',lead:'以 normalized B–S 為共同核心，支援漢字查表、B–S 正向轉寫及本方案藏文反向解碼。',language:'語言',scheme:'閱讀完整轉寫方案',han:'漢字 → 藏文',bs:'B–S → 藏文',reverse:'藏文 → B–S',swap:'交換',clear:'清除',copy:'複製',copied:'已複製',hanLabel:'漢字',boLabel:'藏文',hanPlaceholder:'輸入漢字；未收錄字不猜測',bsPlaceholder:'例如：*s-rut  *m-s-rəʔ',boPlaceholder:'例如：སྲུད',csv:'載入 han,bs CSV',loading:'正在載入漢字表……',failed:'預設漢字表無法載入；可手動選取 CSV。',ready:n=>`漢字表：${n} 字`,done:'轉換完成。',emptyHan:'輸入漢字後即時查表轉成藏文。',emptyBs:'輸入 B–S 後即時轉成藏文。',emptyReverse:'輸入本方案藏文後即時轉回 normalized B–S。',instructions:'使用說明'},
+    en:{title:'Old Chinese–Tibetan Converter',lead:'A shared normalized B–S core for character lookup, forward transcription, and canonical reverse decoding.',language:'Language',scheme:'Read the full transcription scheme',han:'Chinese → Tibetan',bs:'B–S → Tibetan',reverse:'Tibetan → B–S',swap:'Swap',clear:'Clear',copy:'Copy',copied:'Copied',hanLabel:'Chinese',boLabel:'Tibetan',hanPlaceholder:'Enter characters present in the CSV table',bsPlaceholder:'Example: *s-rut  *m-s-rəʔ',boPlaceholder:'Example: སྲུད',csv:'Load han,bs CSV',loading:'Loading character table…',failed:'The default table could not be loaded; select a CSV manually.',ready:n=>`Character table: ${n} entries`,done:'Conversion complete.',emptyHan:'Enter Chinese characters to look them up and convert them.',emptyBs:'Enter B–S to convert it to Tibetan.',emptyReverse:'Enter scheme Tibetan to decode it to normalized B–S.',instructions:'Instructions'}
+  };
+  let saved='';try{saved=localStorage.getItem('oc-tibetan-language')||''}catch(_){}
+  const state={direction:'han',table:null,tableFailed:false,language:saved||(navigator.language.toLowerCase().startsWith('zh')?'zh-Hant':'en')};
+  const input=document.querySelector('#input'),output=document.querySelector('#output'),status=document.querySelector('#status'),tableStatus=document.querySelector('#table-status');
+  const directionHan=document.querySelector('#direction-han'),directionBs=document.querySelector('#direction-bs'),directionBoBs=document.querySelector('#direction-bo-bs'),languageSelect=document.querySelector('#language');
+  const t=()=>strings[state.language];
+  function convert(){
+    if(state.direction==='han'&&!state.table){output.value='';status.classList.toggle('error',state.tableFailed);status.textContent=state.tableFailed?t().failed:t().loading;return}
+    const result=state.direction==='han'?BsTibetan.hanToTibetan(input.value,state.table):state.direction==='bs'?BsTibetan.convertBsText(input.value):BsTibetan.convertTibetanText(input.value);
+    output.value=result.output;status.classList.toggle('error',result.errors.length>0);status.textContent=result.errors.length?result.errors.join(state.language==='en'?'; ':'；'):input.value.trim()?t().done:state.direction==='han'?t().emptyHan:state.direction==='bs'?t().emptyBs:t().emptyReverse;
+  }
+  function setDirection(direction,preserve=false){
+    state.direction=direction;directionHan.setAttribute('aria-pressed',direction==='han');directionBs.setAttribute('aria-pressed',direction==='bs');directionBoBs.setAttribute('aria-pressed',direction==='bo-bs');
+    const reverse=direction==='bo-bs';document.querySelector('#input-label').textContent=direction==='han'?t().hanLabel:direction==='bs'?'B–S':t().boLabel;document.querySelector('#output-label').textContent=reverse?'B–S':t().boLabel;
+    input.classList.toggle('tibetan',reverse);input.classList.toggle('han',direction==='han');output.classList.toggle('tibetan',!reverse);document.querySelector('#han-options').hidden=direction!=='han';document.querySelector('#swap').hidden=direction==='han';
+    input.placeholder=direction==='han'?t().hanPlaceholder:direction==='bs'?t().bsPlaceholder:t().boPlaceholder;if(!preserve){input.value='';output.value=''}convert();
+  }
+  function applyLanguage(){
+    const s=t();document.documentElement.lang=state.language;document.title=s.title;document.querySelector('#page-title').textContent=s.title;document.querySelector('#lead').textContent=s.lead;document.querySelector('#language-label').textContent=s.language;document.querySelector('#scheme-link').textContent=s.scheme;document.querySelector('#scheme-link').href=state.language==='en'?'../上古漢語藏文轉寫方案-en.html':'../上古漢語藏文轉寫方案.html';
+    directionHan.textContent=s.han;directionBs.textContent=s.bs;directionBoBs.textContent=s.reverse;document.querySelector('#swap').textContent=s.swap;document.querySelector('#clear').textContent=s.clear;document.querySelector('#copy').textContent=s.copy;document.querySelector('#csv-label').textContent=s.csv;document.querySelector('#instructions-title').textContent=s.instructions;document.querySelector('#license').href='https://creativecommons.org/licenses/by-nc-sa/4.0/deed.'+(state.language==='en'?'en':'zh-hant');tableStatus.textContent=state.table?s.ready(state.table.size):state.tableFailed?s.failed:s.loading;languageSelect.value=state.language;setDirection(state.direction,true);
+  }
+  function loadTable(text){try{state.table=BsTibetan.parseHanBsCsv(text);state.tableFailed=false;tableStatus.textContent=t().ready(state.table.size)}catch(error){state.table=null;state.tableFailed=true;tableStatus.textContent=error.message}convert()}
+  input.addEventListener('input',convert);directionHan.addEventListener('click',()=>setDirection('han'));directionBs.addEventListener('click',()=>setDirection('bs'));directionBoBs.addEventListener('click',()=>setDirection('bo-bs'));
+  languageSelect.addEventListener('change',event=>{state.language=event.target.value;try{localStorage.setItem('oc-tibetan-language',state.language)}catch(_){}applyLanguage()});
+  document.querySelector('#swap').addEventListener('click',()=>{const value=output.value;setDirection(state.direction==='bs'?'bo-bs':'bs',true);input.value=value;convert();input.focus()});
+  document.querySelector('#clear').addEventListener('click',()=>{input.value='';convert();input.focus()});
+  document.querySelector('#copy').addEventListener('click',async event=>{if(!output.value)return;try{await navigator.clipboard.writeText(output.value);event.currentTarget.textContent=t().copied;setTimeout(()=>event.currentTarget.textContent=t().copy,1200)}catch(_){output.select();document.execCommand('copy')}});
+  document.querySelector('#csv-file').addEventListener('change',async event=>{const file=event.target.files[0];if(file)loadTable(await file.text())});
+  applyLanguage();if(typeof fetch==='function')fetch('data/han-bs.csv?v=oc-tibetan-v1').then(response=>{if(!response.ok)throw new Error(String(response.status));return response.text()}).then(loadTable).catch(()=>{state.tableFailed=true;tableStatus.textContent=t().failed;convert()});
+</script>
+</body></html>

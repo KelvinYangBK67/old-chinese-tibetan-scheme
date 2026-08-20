@@ -1,0 +1,78 @@
+@font-face {
+  font-family: "Libertinus Sans Web";
+  src: url("fonts/LibertinusSans-Regular.woff2?v=oc-tibetan-v1") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Libertinus Sans Web";
+  src: url("fonts/LibertinusSans-Bold.woff2?v=oc-tibetan-v1") format("woff2");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Noto Serif Tibetan Web";
+  src: url("fonts/NotoSerifTibetan-Regular.woff2?v=oc-tibetan-v1") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+:root {
+  --ink: #20242a; --muted: #68717c; --line: #d9dde2;
+  --line-strong: #b9c0c8; --accent: #315b7d; --soft: #f4f6f8;
+  font-family: "Libertinus Sans Web", "Shanggu Web", sans-serif;
+  color: var(--ink); background: #fff; font-synthesis: none; font-size: 16px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: #f5f6f7; line-height: 1.65; }
+a { color: var(--accent); text-underline-offset: .16em; }
+.layout {
+  display: grid; grid-template-columns: 19rem minmax(0, 1fr); gap: 2rem;
+  width: min(80rem, 75vw); min-height: 100vh; margin: 0 auto;
+}
+.rail {
+  position: sticky; top: 0; height: 100vh; padding: 2.25rem 1.5rem;
+  border-right: 1px solid var(--line); overflow-y: auto;
+}
+.rail-title { margin: 0 0 .3rem; font-size: 1rem; font-weight: 700; line-height: 1.45; }
+.rail-meta { margin: 0 0 1.75rem; color: var(--muted); font-size: .78rem; }
+nav a { display: block; padding: .27rem 0; color: #4e5863; text-decoration: none; font-size: .86rem; }
+nav a:hover { color: var(--accent); text-decoration: underline; }
+nav .sub { padding-left: .85rem; font-size: .78rem; }
+.rail-foot { margin-top: 1.75rem; padding-top: .9rem; border-top: 1px solid var(--line); font-size: .76rem; color: var(--muted); }
+main {
+  width: 100%; margin: 1.5rem 0 3rem; padding: 2.5rem 3rem 6rem;
+  border: 1px solid #e3e6e9; background: #fff;
+}
+.hero { padding: 0 0 2.1rem; border-bottom: 1px solid var(--line-strong); }
+.eyebrow { margin: 0 0 .7rem; color: var(--muted); font-size: .7rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+h1 { margin: 0; font-size: clamp(1.85rem, 2.7vw, 2.3rem); font-weight: 700; line-height: 1.25; }
+.lead { max-width: 48rem; margin: 1rem 0 0; color: #47515c; font-size: 1rem; line-height: 1.75; }
+.hero-meta { display: flex; gap: 1rem; margin-top: 1rem; color: var(--muted); font-size: .8rem; }
+section { scroll-margin-top: 1.5rem; margin-top: 3rem; }
+.section-head { margin-bottom: 1.15rem; border-bottom: 1px solid var(--line); }
+h2 { margin: 0 0 .45rem; font-size: 1.45rem; font-weight: 700; line-height: 1.35; }
+h3 { margin: 2rem 0 .8rem; font-size: 1.05rem; font-weight: 700; }
+.note { max-width: 58rem; margin: 1.2rem 0; padding: .75rem 1rem; border-left: 3px solid var(--accent); background: var(--soft); line-height: 1.7; }
+.table-wrap { width: fit-content; max-width: 100%; margin: .8rem 0 1.75rem; border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); overflow-x: auto; }
+table { width: auto; max-width: 100%; border-collapse: collapse; font-size: .88rem; }
+th, td { padding: .48rem .62rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+thead th { background: var(--soft); color: #3f4852; font-size: .76rem; font-weight: 700; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: #f8fafb; }
+.phonetic { font-family: "Libertinus Sans Web", sans-serif; font-style: italic; }
+code, pre { font-family: "Libertinus Sans Web", sans-serif; }
+pre { max-width: 100%; overflow: auto; padding: 1rem; background: var(--soft); }
+.tibetan { font-family: "Noto Serif Tibetan Web", serif; font-size: 1.35em; line-height: 1.2; }
+footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
+@media (max-width: 1100px) {
+  .layout { display: block; width: 100%; }
+  .rail { position: relative; width: 100%; height: auto; padding: 1rem 1.25rem; border-right: 0; border-bottom: 1px solid var(--line); }
+  .rail-meta, .rail-foot { display: none; }
+  nav { display: flex; gap: .8rem; overflow-x: auto; }
+  nav a { flex: 0 0 auto; }
+  nav .sub { display: none; }
+  main { margin: 0; padding: 2rem 1.25rem 5rem; border: 0; }
+}
+@media print {
+  .rail { display: none; } .layout { display: block; }
+  main { width: 100%; padding: 0; } body { background: #fff; }
+  .table-wrap { break-inside: avoid; }
+}
