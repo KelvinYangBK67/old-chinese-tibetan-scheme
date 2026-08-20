@@ -19,10 +19,16 @@ assert.equal(c.normalizeNotation("*[b]ˤr[a]k"), "bˤrak");
 assert.equal(c.bsSyllableToTibetan("*p(r)omʔ"), c.bsSyllableToTibetan("promʔ"));
 assert.throws(() => c.parseBsSyllable("m̥a"), /清響音/);
 const table = c.parseHanBsCsv("han,bs\n某,*məʔ\n");
-assert.deepEqual(c.hanToTibetan("某。", table), { output: "མྀའ༎", bs: "məʔ。", errors: [] });
+assert.deepEqual(table.get("某"), [{ bs: "məʔ" }]);
+assert.deepEqual(c.hanToTibetan("某。", table), { output: "མྀའ༎", bs: "məʔ。", errors: [], ambiguities: [] });
 const rewritten = c.parseHanBsCsv("han,bs\n甲,m̥a\n");
-assert.equal(rewritten.get("甲"), "k-ma");
+assert.equal(rewritten.get("甲")[0].bs, "k-ma");
 assert.equal(c.hanToTibetan("甲", rewritten).output, "ཀྨ");
+const polyphonic = c.parseHanBsCsv('han,bs,pinyin,middle_chinese,gloss\n行,*gˤraŋ,xíng,haeng,"walk, go"\n行,*Cə.gˤraŋ,háng,hang,row\n');
+assert.equal(polyphonic.get("行").length, 2);
+assert.equal(c.hanToBs("行", polyphonic).ambiguities.length, 1);
+assert.equal(c.hanToBs("行", polyphonic, { 0: 1 }).output, "Cə.gˤraŋ");
+assert.equal(polyphonic.get("行")[0].gloss, "walk, go");
 assert.equal(c.convertBsText("pa s-rut").output, "པ་སྲུད");
 assert.equal(c.convertBsText("Cə.pa pa.").output, "འྀཔ་པ༎");
 
@@ -34,4 +40,7 @@ for (const root of Object.keys(c.BASE)) for (const classKey of Object.keys(c.CLA
     exhaustive += 1;
   }
 }
+const corpus = c.parseHanBsCsv(require("node:fs").readFileSync(require("node:path").join(__dirname, "../converter/data/han-bs.csv"), "utf8"));
+assert.ok(corpus.size > 4000, `expected full Baxter–Sagart table, got ${corpus.size} characters`);
+assert.ok([...corpus.values()].filter(options => options.length > 1).length > 500, "expected polyphonic entries");
 console.log(`${cases.length} examples, ${exhaustive} exhaustive main-syllable round trips, and auxiliary checks passed.`);

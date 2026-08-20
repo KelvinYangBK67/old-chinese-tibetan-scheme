@@ -5,4 +5,4 @@
 *.synctex.gz
 *.xdv
 __pycache__/
-
+_sources/

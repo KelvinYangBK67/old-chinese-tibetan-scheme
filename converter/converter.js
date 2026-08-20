@@ -241,20 +241,59 @@
     return formatBs(tibetanSyllableToSlots(raw));
   }
 
+  function parseCsv(text) {
+    const rows = [];
+    let row = [], field = "", quoted = false;
+    const source = String(text).replace(/^\uFEFF/u, "");
+    for (let index = 0; index <= source.length; index += 1) {
+      const character = source[index] || "\n";
+      if (quoted) {
+        if (character === '"' && source[index + 1] === '"') { field += '"'; index += 1; }
+        else if (character === '"') quoted = false;
+        else field += character;
+      } else if (character === '"' && !field) quoted = true;
+      else if (character === ",") { row.push(field); field = ""; }
+      else if (character === "\n") {
+        row.push(field.replace(/\r$/u, ""));
+        if (row.some(value => value.trim())) rows.push(row);
+        row = []; field = "";
+      } else field += character;
+    }
+    if (quoted) throw new BsError("CSV 引號未閉合");
+    return rows;
+  }
+
+  function appendMetadata(target, source, key) {
+    if (!source[key]) return;
+    const values = new Set(String(target[key] || "").split("; ").filter(Boolean));
+    values.add(source[key]);
+    target[key] = [...values].join("; ");
+  }
+
   function parseHanBsCsv(text) {
-    const rows = String(text).replace(/^\uFEFF/u, "").split(/\r?\n/u);
-    if ((rows.shift() || "").trim().toLowerCase() !== "han,bs") throw new BsError("漢字表須以 han,bs 為表頭");
+    const rows = parseCsv(text);
+    const header = (rows.shift() || []).map(value => value.trim().toLowerCase());
+    const hanIndex = header.indexOf("han"), bsIndex = header.indexOf("bs");
+    if (hanIndex < 0 || bsIndex < 0) throw new BsError("漢字表須包含 han,bs 欄位");
+    const metadata = {
+      pinyin: Math.max(header.indexOf("pinyin"), header.indexOf("py")),
+      middleChinese: Math.max(header.indexOf("middle_chinese"), header.indexOf("mc")),
+      gloss: header.indexOf("gloss")
+    };
     const map = new Map();
     for (const row of rows) {
-      if (!row.trim() || row.trimStart().startsWith("#")) continue;
-      const comma = row.indexOf(",");
-      if (comma < 1) throw new BsError(`無效 CSV 資料列：${row}`);
-      const han = row.slice(0, comma).trim();
-      const bs = row.slice(comma + 1).trim();
-      if ([...han].length !== 1 || !bs) throw new BsError(`無效漢字映射：${row}`);
+      if (row[0]?.trimStart().startsWith("#")) continue;
+      const han = (row[hanIndex] || "").trim();
+      const bs = (row[bsIndex] || "").trim();
+      if ([...han].length !== 1 || !bs) throw new BsError(`無效漢字映射：${row.join(",")}`);
       const canonical = parseBsSyllable(bs, { contextKey: han }).normalized;
-      if (map.has(han) && map.get(han) !== canonical) throw new BsError(`${han} 有衝突映射`);
-      map.set(han, canonical);
+      const candidate = { bs: canonical };
+      for (const [key, index] of Object.entries(metadata)) if (index >= 0) candidate[key] = (row[index] || "").trim();
+      const candidates = map.get(han) || [];
+      const existing = candidates.find(item => item.bs === canonical);
+      if (existing) for (const key of Object.keys(metadata)) appendMetadata(existing, candidate, key);
+      else candidates.push(candidate);
+      map.set(han, candidates);
     }
     return map;
   }
@@ -270,23 +309,34 @@
     return output;
   }
 
-  function hanToBs(input, table) {
+  function hanToBs(input, table, choices = {}) {
     if (!(table instanceof Map)) throw new BsError("漢字 B–S 表尚未載入");
     const output = [];
     const errors = [];
+    const ambiguities = [];
+    let index = 0;
     for (const character of String(input)) {
-      if (table.has(character)) output.push(table.get(character));
+      if (table.has(character)) {
+        const stored = table.get(character);
+        const candidates = Array.isArray(stored) ? stored : [{ bs: stored }];
+        const requested = choices[index];
+        let selected = Number.isInteger(requested) ? requested : candidates.findIndex(item => item.bs === requested);
+        if (selected < 0 || selected >= candidates.length) selected = 0;
+        output.push(candidates[selected].bs);
+        if (candidates.length > 1) ambiguities.push({ index, character, selected, options: candidates });
+      }
       else if (/\p{Script=Han}/u.test(character)) { output.push(character); errors.push(`${character}：字表未收錄`); }
-      else if (/\s/u.test(character)) continue;
+      else if (/\s/u.test(character)) { /* Whitespace separates neither lookup entries nor output syllables. */ }
       else output.push(character);
+      index += 1;
     }
-    return { output: output.join(" ").replace(/\s+([，。！？；：,.!?;:])/gu, "$1"), errors };
+    return { output: output.join(" ").replace(/\s+([，。！？；：,.!?;:])/gu, "$1"), errors, ambiguities };
   }
 
-  function hanToTibetan(input, table) {
-    const bsResult = hanToBs(input, table);
+  function hanToTibetan(input, table, choices = {}) {
+    const bsResult = hanToBs(input, table, choices);
     const converted = convertBsText(bsResult.output);
-    return { output: converted.output, bs: bsResult.output, errors: [...bsResult.errors, ...converted.errors] };
+    return { output: converted.output, bs: bsResult.output, errors: [...bsResult.errors, ...converted.errors], ambiguities: bsResult.ambiguities };
   }
 
   function convertBsText(input) {

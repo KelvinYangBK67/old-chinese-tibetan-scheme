@@ -31,6 +31,9 @@ for (const page of [
   assert.ok(readme.includes(`https://kelvinyangbk67.github.io/old-chinese-tibetan-scheme/${page}`), `README: missing Pages link for ${page}`);
 }
 
+const converter = fs.readFileSync(path.join(__dirname, "..", "converter/index.html"), "utf8");
+assert.match(converter, /id="reading-choices"/u, "converter: missing polyphonic reading chooser");
+
 const chineseScheme = fs.readFileSync(path.join(__dirname, "..", "上古漢語藏文轉寫方案.html"), "utf8");
 for (const section of ["initials", "onsets", "features", "vowels", "codas", "sonorants", "tests"]) {
   assert.ok(chineseScheme.includes(`id="${section}"`), `Chinese scheme: missing human-facing section ${section}`);

@@ -10,11 +10,11 @@
 
 ## 互轉工具 / Converter
 
-- 漢字 → 藏文：先由靜態 `han,bs` 表取得 B–S 擬音，再轉寫爲藏文。
+- 漢字 → 藏文：收錄 Baxter–Sagart 表中 4,056 個字頭；多音字可逐字選擇讀音，再轉寫爲藏文。
 - B–S → 藏文：接受構擬星號、括號記號與以 `~` 分隔的 alternative。
 - 藏文 → B–S：輸出 normalized B–S，不重建構擬記號。
 
-附文未提供逐字 B–S 資料，因此 `converter/data/han-bs.csv` 初始只有表頭；未收錄字不作猜測。清響音及異常格式須在 `converter/data/rules.js` 以漢字或 row ID 為鍵明確改寫。
+`converter/data/han-bs.csv` 整理自 [Baxter–Sagart Old Chinese reconstruction](https://sites.lsa.umich.edu/ocbaxtersagart/)；下載的原始工作簿不納入 repository。多音字選擇方式參考[切韻音系自動推導器](https://uliloewi.github.io/qieyun-autoderiver/)，候選項同時顯示 B–S 擬音、拼音、中古音和釋義。
 
 ## 測試 / Tests
 
