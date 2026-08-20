@@ -22,4 +22,13 @@ for (const relative of [
   }
 }
 
-console.log("HTML metadata and inline scripts passed.");
+const readme = fs.readFileSync(path.join(__dirname, "..", "README.md"), "utf8");
+for (const page of [
+  "%E4%B8%8A%E5%8F%A4%E6%BC%A2%E8%AA%9E%E8%97%8F%E6%96%87%E8%BD%89%E5%AF%AB%E6%96%B9%E6%A1%88.html",
+  "%E4%B8%8A%E5%8F%A4%E6%BC%A2%E8%AA%9E%E8%97%8F%E6%96%87%E8%BD%89%E5%AF%AB%E6%96%B9%E6%A1%88-en.html",
+  "converter/"
+]) {
+  assert.ok(readme.includes(`https://kelvinyangbk67.github.io/old-chinese-tibetan-scheme/${page}`), `README: missing Pages link for ${page}`);
+}
+
+console.log("HTML metadata, inline scripts, and README Pages links passed.");

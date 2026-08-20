@@ -8,9 +8,9 @@
 decode(encode(BS)) = normalize(BS)
 ```
 
-- [閱讀中文網頁版](上古漢語藏文轉寫方案.html)
-- [Read the English web edition](上古漢語藏文轉寫方案-en.html)
-- [使用漢字、B–S、藏文轉換器](converter/)
+- [閱讀中文網頁版](https://kelvinyangbk67.github.io/old-chinese-tibetan-scheme/%E4%B8%8A%E5%8F%A4%E6%BC%A2%E8%AA%9E%E8%97%8F%E6%96%87%E8%BD%89%E5%AF%AB%E6%96%B9%E6%A1%88.html)
+- [Read the English web edition](https://kelvinyangbk67.github.io/old-chinese-tibetan-scheme/%E4%B8%8A%E5%8F%A4%E6%BC%A2%E8%AA%9E%E8%97%8F%E6%96%87%E8%BD%89%E5%AF%AB%E6%96%B9%E6%A1%88-en.html)
+- [使用漢字、B–S、藏文轉換器](https://kelvinyangbk67.github.io/old-chinese-tibetan-scheme/converter/)
 
 ## 互轉工具 / Converter
 
