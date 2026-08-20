@@ -295,6 +295,9 @@
       else candidates.push(candidate);
       map.set(han, candidates);
     }
+    for (const [variant, standard] of Object.entries(externalData.hanVariants || {})) {
+      if (!map.has(variant) && map.has(standard)) map.set(variant, map.get(standard));
+    }
     return map;
   }
 
@@ -312,7 +315,7 @@
   function hanToBs(input, table, choices = {}) {
     if (!(table instanceof Map)) throw new BsError("漢字 B–S 表尚未載入");
     const output = [];
-    const errors = [];
+    const errors = new Set();
     const ambiguities = [];
     let index = 0;
     for (const character of String(input)) {
@@ -325,18 +328,20 @@
         output.push(candidates[selected].bs);
         if (candidates.length > 1) ambiguities.push({ index, character, selected, options: candidates });
       }
-      else if (/\p{Script=Han}/u.test(character)) { output.push(character); errors.push(`${character}：字表未收錄`); }
-      else if (/\s/u.test(character)) { /* Whitespace separates neither lookup entries nor output syllables. */ }
+      else if (/\p{Script=Han}/u.test(character)) { output.push(character); errors.add(`${character}：字表未收錄`); }
+      else if (/\s/u.test(character) || QUOTES.has(character)) { /* Formatting is omitted from the transcription. */ }
       else output.push(character);
       index += 1;
     }
-    return { output: output.join(" ").replace(/\s+([，。！？；：,.!?;:])/gu, "$1"), errors, ambiguities };
+    return { output: output.join(" ").replace(/\s+([，。！？；：,.!?;:])/gu, "$1"), errors: [...errors], ambiguities };
   }
 
   function hanToTibetan(input, table, choices = {}) {
     const bsResult = hanToBs(input, table, choices);
     const converted = convertBsText(bsResult.output);
-    return { output: converted.output, bs: bsResult.output, errors: [...bsResult.errors, ...converted.errors], ambiguities: bsResult.ambiguities };
+    const convertedErrors = converted.errors.filter(message => !/\p{Script=Han}/u.test(message));
+    const errors = [...new Set([...bsResult.errors, ...convertedErrors])];
+    return { output: converted.output, bs: bsResult.output, errors, ambiguities: bsResult.ambiguities };
   }
 
   function convertBsText(input) {

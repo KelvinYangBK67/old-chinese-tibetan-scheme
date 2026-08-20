@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="漢字、Baxter–Sagart 上古漢語擬音與藏文雙向轉換。">
   <title>上古漢語–藏文轉換器</title>
-  <link rel="preload" href="../fonts/NotoSerifTibetan-Regular.woff2?v=oc-tibetan-v2" as="font" type="font/woff2" crossorigin fetchpriority="high">
-  <link rel="preload" href="../fonts/shanggu-web/ShangguSans-Regular-core.woff2?v=oc-tibetan-v2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../fonts/shanggu-web.css?v=oc-tibetan-v2">
+  <link rel="preload" href="../fonts/NotoSerifTibetan-Regular.woff2?v=oc-tibetan-v3" as="font" type="font/woff2" crossorigin fetchpriority="high">
+  <link rel="preload" href="../fonts/shanggu-web/ShangguSans-Regular-core.woff2?v=oc-tibetan-v3" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../fonts/shanggu-web.css?v=oc-tibetan-v3">
   <style>
-    @font-face{font-family:"Libertinus";src:url("../fonts/LibertinusSans-Regular.woff2?v=oc-tibetan-v2") format("woff2");font-weight:400;font-display:swap}
-    @font-face{font-family:"Libertinus";src:url("../fonts/LibertinusSans-Bold.woff2?v=oc-tibetan-v2") format("woff2");font-weight:700;font-display:swap}
-    @font-face{font-family:"Tibetan";src:url("../fonts/NotoSerifTibetan-Regular.woff2?v=oc-tibetan-v2") format("woff2");font-weight:400;font-display:swap}
+    @font-face{font-family:"Libertinus";src:url("../fonts/LibertinusSans-Regular.woff2?v=oc-tibetan-v3") format("woff2");font-weight:400;font-display:swap}
+    @font-face{font-family:"Libertinus";src:url("../fonts/LibertinusSans-Bold.woff2?v=oc-tibetan-v3") format("woff2");font-weight:700;font-display:swap}
+    @font-face{font-family:"Tibetan";src:url("../fonts/NotoSerifTibetan-Regular.woff2?v=oc-tibetan-v3") format("woff2");font-weight:400;font-display:swap}
     :root{--ink:#20242a;--muted:#68717c;--line:#d6dce2;--accent:#315b7d;--soft:#f4f6f8;color:var(--ink);background:#f4f6f8;font-family:"Libertinus","Shanggu Web",sans-serif;font-synthesis:none}
     *{box-sizing:border-box}body{min-height:100vh;margin:0;line-height:1.6}.page{width:min(72rem,calc(100% - 2rem));margin:0 auto;padding:clamp(2rem,6vw,5rem) 0}
     header{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;margin-bottom:2rem}.eyebrow{margin:0 0 .4rem;color:var(--muted);font-size:.72rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
@@ -46,7 +46,7 @@
   <section class="instructions" aria-labelledby="instructions-title"><h2 id="instructions-title">使用說明</h2><p id="instruction-han">輸入漢字即可轉寫。遇到多音字時，上方會列出各讀音的 B–S 擬音、拼音、中古音和釋義，可逐字自行選擇；未收錄字保留原形並提示。</p><p id="instruction-bs">B–S 方向接受構擬星號、括號記號與 <code>~</code>；反向只恢復 normalized B–S。<code>s-rut</code> 與 <code>srut</code> 均寫作 <span class="tibetan-inline">སྲུད</span>。</p><p id="instruction-punctuation">相鄰音節以 <span class="tibetan-inline">་</span> 分隔；句末標點轉為 <span class="tibetan-inline">༎</span>，一般標點轉為 <span class="tibetan-inline">།</span>。</p></section>
   <footer>© 2026 Kelvin Yang · <a id="license" rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hant">CC BY-NC-SA 4.0</a></footer>
 </main>
-<script src="data/rules.js?v=oc-tibetan-v2"></script><script src="converter.js?v=oc-tibetan-v2"></script>
+<script src="data/rules.js?v=oc-tibetan-v3"></script><script src="converter.js?v=oc-tibetan-v3"></script>
 <script>
   const strings={
     'zh-Hant':{title:'上古漢語–藏文轉換器',lead:'以 normalized B–S 為共同核心，支援漢字查表、B–S 正向轉寫及本方案藏文反向解碼。',language:'語言',scheme:'閱讀完整轉寫方案',han:'漢字 → 藏文',bs:'B–S → 藏文',reverse:'藏文 → B–S',swap:'交換',clear:'清除',copy:'複製',copied:'已複製',hanLabel:'漢字',boLabel:'藏文',hanPlaceholder:'輸入漢字；未收錄字不猜測',bsPlaceholder:'例如：*s-rut  *m-s-rəʔ',boPlaceholder:'例如：སྲུད',csv:'載入自訂 CSV',loading:'正在載入漢字表……',failed:'預設漢字表無法載入；可手動選取 CSV。',ready:n=>`漢字表：${n} 字`,done:'轉換完成。',ambiguous:n=>`有 ${n} 個多音字，請在上方選擇讀音。`,emptyHan:'輸入漢字後即時查表轉成藏文。',emptyBs:'輸入 B–S 後即時轉成藏文。',emptyReverse:'輸入本方案藏文後即時轉回 normalized B–S。',instructions:'使用說明'},
@@ -88,6 +88,6 @@
   document.querySelector('#clear').addEventListener('click',()=>{input.value='';convert();input.focus()});
   document.querySelector('#copy').addEventListener('click',async event=>{if(!output.value)return;try{await navigator.clipboard.writeText(output.value);event.currentTarget.textContent=t().copied;setTimeout(()=>event.currentTarget.textContent=t().copy,1200)}catch(_){output.select();document.execCommand('copy')}});
   document.querySelector('#csv-file').addEventListener('change',async event=>{const file=event.target.files[0];if(file)loadTable(await file.text())});
-  applyLanguage();if(typeof fetch==='function')fetch('data/han-bs.csv?v=oc-tibetan-v2').then(response=>{if(!response.ok)throw new Error(String(response.status));return response.text()}).then(loadTable).catch(()=>{state.tableFailed=true;tableStatus.textContent=t().failed;convert()});
+  applyLanguage();if(typeof fetch==='function')fetch('data/han-bs.csv?v=oc-tibetan-v3').then(response=>{if(!response.ok)throw new Error(String(response.status));return response.text()}).then(loadTable).catch(()=>{state.tableFailed=true;tableStatus.textContent=t().failed;convert()});
 </script>
 </body></html>

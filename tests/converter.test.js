@@ -1,6 +1,6 @@
 "use strict";
 const assert = require("node:assert/strict");
-global.BS_TIBETAN_DATA = { voicelessSonorantRewrite: { "甲": "k-ma" }, specialNormalization: {} };
+global.BS_TIBETAN_DATA = { hanVariants: { "衆": "眾", "啓": "启", "啟": "启" }, voicelessSonorantRewrite: { "甲": "k-ma" }, specialNormalization: {} };
 const c = require("../converter/converter.js");
 
 const cases = [
@@ -29,6 +29,13 @@ assert.equal(polyphonic.get("行").length, 2);
 assert.equal(c.hanToBs("行", polyphonic).ambiguities.length, 1);
 assert.equal(c.hanToBs("行", polyphonic, { 0: 1 }).output, "Cə.gˤraŋ");
 assert.equal(polyphonic.get("行")[0].gloss, "walk, go");
+const quoted = c.hanToTibetan("「某、某」未未", table);
+assert.deepEqual(quoted.errors, ["未：字表未收錄"]);
+assert.ok(!quoted.bs.includes("「") && !quoted.bs.includes("」"));
+assert.ok(!quoted.errors.some(error => error.includes("主音節缺少元音")));
+const variants = c.parseHanBsCsv("han,bs\n眾,tuŋ-s\n启,kʰˤijʔ\n");
+assert.equal(variants.get("衆")[0].bs, variants.get("眾")[0].bs);
+assert.equal(variants.get("啓")[0].bs, variants.get("启")[0].bs);
 assert.equal(c.convertBsText("pa s-rut").output, "པ་སྲུད");
 assert.equal(c.convertBsText("Cə.pa pa.").output, "འྀཔ་པ༎");
 
